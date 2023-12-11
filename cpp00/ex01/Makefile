@@ -12,7 +12,9 @@ OBJ				=	$(addprefix $(OBJS_DIR), $(SRC:.cpp=.o))
 
 RM				=	rm -fr
 
-$(OBJS_DIR)%.o	: %.cpp
+# HEADER			=	$(NAME).hpp
+
+$(OBJS_DIR)%.o	: %.cpp #$(HEADER)
 				$(GCC) $(CFLAGS) -c $< -o $@
 
 all				:	$(NAME)
