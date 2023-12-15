@@ -11,7 +11,7 @@ int	main(int argc, char **argv)
 		std::cout << "* LOUD AND UNBEARABLE FEEDBACK NOISE *";
 	while (argv && argv[++word])
 	{
-        str = argv[word];
+		str = argv[word];
 		iter = str.begin();
 		while (iter != str.end())
 			std::cout << (char)std::toupper(*iter++);
