@@ -1,8 +1,5 @@
 #include "PhoneBook.hpp"
-// #include "Contact.hpp"
 #include <iostream>
-// #include <iomanip>
-// #include <string>
 
 #define ADD "ADD"
 #define SEARCH "SEARCH"
@@ -11,10 +8,9 @@
 int	main(int argc, char **argv)
 {
 	(void)argv;
-	std::string	input = "";
+	std::string	input;
 	PhoneBook	pb;
 	int			id = 0;
-	// Contact		c01, c02, c03, c04, c05, c06, c07, c08;
 
 	if (argc != 1)
 	{

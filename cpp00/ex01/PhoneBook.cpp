@@ -2,7 +2,8 @@
 
 PhoneBook::PhoneBook()
 {
-	std::cout << "Hello!!!\nWelcome to your ultra modern Phone book that does not save contacts." << std::endl;
+	std::cout << "Hello!!!\nWelcome to your ultra modern Phone book that does not save contacts.";
+	show_instructions();
 }
 
 PhoneBook::~PhoneBook()
@@ -19,66 +20,106 @@ void	PhoneBook::add_contact(int id)
 	{
 		std::cout << output[i];
 		std::getline(std::cin, input[i]);
-		while (input[i].empty())
+		while (input[i].empty() || (input[i].find_first_not_of(" \t") >= input[i].length()))
 		{
+			if (!std::cin)
+				return ;
 			std::cout << "A contact can’t have empty fields." << std::endl << "Try again >> ";
 			std::getline(std::cin, input[i]);
-			if (!std::cin)
-					return ;
 		}
 	}
 
 	this->_contacts[id].hydrate(input);
 }
 
+void	PhoneBook::show_instructions(void)
+{
+	std::cout << std::endl << "Please type ADD, SEARCH to handle your contacts or EXIT." << std::endl;
+	std::cout << "Any other input is discarded." << std::endl;
+
+}
+
 void	PhoneBook::show_field(std::string str)
 {
+	std::string	tmp;
+
+	tmp = str.substr(0, 10);
 	std::cout << '|' << std::setw(10);
 	if (str.length() > 10)
-		std::cout << str.substr(0,8) << ".";
-	else
-		std::cout << str;
+		tmp.at(9) = '.';
+	std::cout << tmp;
 }
 
 void	PhoneBook::show_row(int i)
 {
 		std::cout << '|' << std::setw(10) << i;
 		show_field(this->_contacts[i].get_f_name());
-		show_field(this->_contacts[i].get_n_name());
 		show_field(this->_contacts[i].get_l_name());
+		show_field(this->_contacts[i].get_n_name());
 		std::cout << '|' << std::endl;
+}
+
+int	PhoneBook::isvalid_id(std::string str, int i)
+{
+	int	id;
+
+	if (str.empty())
+		return (-1);
+	id = atoi(str.c_str());
+	if (id > 0 && id < i)
+		return (id);
+	if (!id && ((str.find_first_not_of("0") >= str.length() || (str.find_first_not_of("0+-") >= str.length() && str.find_last_of("+-") == 0 && str.length() > 1))))
+		return (id);
+	return (-1);
+}
+
+int	PhoneBook::peek_id(int i)
+{
+	std::string	input;
+	int			id;
+
+	std::cout << "Choose an Index >> ";
+	std::getline(std::cin, input);
+	while (1)
+	{
+		if (!std::cin)
+				break ;
+		id = isvalid_id(input, i);
+		if (id >= 0)
+			return (id);
+		std::cout << "Not a valid Index." << std::endl << "Try again >> ";
+		std::getline(std::cin, input);
+	}
+	return (-1);
+
 }
 
 void	PhoneBook::search_contact()
 {
 	int			i = -1;
-	std::string	str_tmp;
+	std::string	input;
 
-
-	std::cout << std::setfill('|') << std::setw(45) << '|' << std::endl;
+	if (!this->_contacts[0].get_saved())
+	{
+		std::cout << "Sorry, it seems you don't have any friends yet." << std::endl;
+		std::cout << "www.youtube.com/watch?v=6EEW-9NDM5k" << std::endl;
+		return ;
+	}
+	std::cout << std::setfill('|');
+	std::cout << std::setw(11) << "Index" << std::setw(11) << "First Name" << std::setw(11) << "Last Name" << std::setw(11) << "Nickname"  << '|' << std::endl;
 
 	std::cout <<  std::setfill(' ');
-	// std::cout << '|' << std::setw(10);
-	while (this->_contacts[++i].get_saved())
+	while (this->_contacts[++i].get_saved() && i < 8)
 		this->show_row(i);
-
-	// if (this->_contacts[i].get_f_name().length() > 10)
-	// 	std::cout << this->_contacts[i].get_f_name().substr(0,8) << ".";
-	// else
-	// 	std::cout << this->_contacts[i].get_f_name();
-
-	// std::cout << '|' << std::setw(10) << this->_contacts[i].get_l_name();
-	// std::cout << '|' << std::setw(10) << this->_contacts[i].get_n_name();
 	std::cout << std::setfill('|') << std::setw(45) << '|' << std::endl;
-
-	std::cin >> i;
-	std::cout << i << std::endl;
-
-	// for (int i = 0; i < 8; i++)
-	// {
-	// 	if (this->_contacts[i].get_saved())
-	// 		std::cout << this->_contacts[i].get_f_name() << "\n" << this->_contacts[i].get_l_name() << "\n"
-	// 		<< this->_contacts[i].get_n_name() << "\n" << this->_contacts[i].get_phone() << "\n" << this->_contacts[i].get_secret() << "\n";
-
-	// }
+	i = peek_id(i);
+	if (i < 0)
+		return ;
+	std::cout << std::endl;
+	std::cout << "First Name: " << this->_contacts[i].get_f_name() << std::endl;
+	std::cout << "Last Name: " << this->_contacts[i].get_l_name() << std::endl;
+	std::cout << "Nickame: " << this->_contacts[i].get_n_name() << std::endl;
+	std::cout << "Phone Number: " << this->_contacts[i].get_phone() << std::endl;
+	std::cout << "Darkest Secret: " << this->_contacts[i].get_secret() << std::endl;
+	show_instructions();
 }
