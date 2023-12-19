@@ -25,7 +25,8 @@ int	main(int argc, char **argv)
 		{
 			if (id >= 8)
 				id = 0;
-			pb.add_contact(id++);
+			if (pb.add_contact(id))
+				id++;
 		}
 		if (!input.compare(SEARCH))
 			pb.search_contact();

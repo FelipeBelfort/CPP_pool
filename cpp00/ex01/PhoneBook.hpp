@@ -18,10 +18,11 @@ class PhoneBook
 		void	show_instructions(void);
 		int		peek_id(int i);
 		int		isvalid_id(std::string str, int i);
+		void	deal_eof(void);
 	public:
 		PhoneBook();
 		~PhoneBook();
-		void	add_contact(int id);
+		int	add_contact(int id);
 		void	search_contact();
 };
 

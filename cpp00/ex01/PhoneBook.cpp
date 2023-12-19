@@ -11,10 +11,11 @@ PhoneBook::~PhoneBook()
 	std::cout << "Good Bye!" << std::endl;
 }
 
-void	PhoneBook::add_contact(int id)
+int	PhoneBook::add_contact(int id)
 {
 	std::string	output[5] = {"First Name: ", "Last Name: ", "Nickame: ", "Phone Number: ", "Darkest secret: "};
 	std::string	input[5];
+	std::string	test;
 
 	for (int i = 0; i < 5; i++)
 	{
@@ -23,13 +24,26 @@ void	PhoneBook::add_contact(int id)
 		while (input[i].empty() || (input[i].find_first_not_of(" \t") >= input[i].length()))
 		{
 			if (!std::cin)
-				return ;
+			{
+				deal_eof();
+				return (0);
+			}
 			std::cout << "A contact can’t have empty fields." << std::endl << "Try again >> ";
 			std::getline(std::cin, input[i]);
 		}
 	}
 
 	this->_contacts[id].hydrate(input);
+	return (1);
+}
+
+void	PhoneBook::deal_eof(void)
+{
+	std::cin.clear();
+	std::cin.ignore();
+	std::cin.putback('\n');
+	std::cout << "\nyou abandoned this action" << std::endl;
+	show_instructions();
 }
 
 void	PhoneBook::show_instructions(void)
@@ -83,7 +97,10 @@ int	PhoneBook::peek_id(int i)
 	while (1)
 	{
 		if (!std::cin)
-				break ;
+		{
+			deal_eof();
+			break ;
+		}
 		id = isvalid_id(input, i);
 		if (id >= 0)
 			return (id);
