@@ -3,17 +3,18 @@
 Contact::Contact()
 {
 	this->set_saved(0);
-	this->set_f_name("");
-	this->set_l_name("");
-	this->set_n_name("");
-	this->set_phone("");
-	this->set_secret("");
 }
 
 Contact::~Contact()
 {
 }
 
+/**
+ * @brief Function to set all attributes.
+ *  It receives a table of strings to be used in order.
+ *
+ * @param std::string data[]
+ */
 void	Contact::hydrate(std::string *data)
 {
 	this->set_f_name(data[0]);
