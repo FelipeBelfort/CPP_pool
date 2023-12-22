@@ -23,7 +23,7 @@ int	main(int argc, char **argv)
 		std::getline(std::cin, input);
 		if (!input.compare(ADD))
 		{
-			if (id >= 8)
+			if (id >= MAX_COUNT)
 				id = 0;
 			if (pb.add_contact(id))
 				id++;

@@ -13,17 +13,22 @@ class Contact
 		std::string	_phone;
 		std::string	_secret;
 
+		//		setters			//
+
 		void		set_f_name(std::string info);
 		void		set_l_name(std::string info);
 		void		set_n_name(std::string info);
 		void		set_phone(std::string info);
 		void		set_secret(std::string info);
 		void		set_saved(int status);
-		
+
 	public:
 		Contact();
 		~Contact();
 		void		hydrate(std::string data[]);
+
+		//		getters			//
+
 		int			get_saved();
 		std::string	get_f_name();
 		std::string	get_l_name();
