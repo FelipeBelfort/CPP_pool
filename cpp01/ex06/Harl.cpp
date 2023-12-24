@@ -38,10 +38,20 @@ void	Harl::complain(std::string level)
 {
 	int	i = 0;
 
-	if (level.empty())
-		return ;
 	while (i < 4 && level.compare(_level[i]))
 		i++;
-	if (i < 4)
-		(this->*_f[i])();
+	switch (i)
+	{
+	case	0:
+		(this->*_f[0])();
+	case	1:
+		(this->*_f[1])();
+	case	2:
+		(this->*_f[2])();
+	case	3:
+		(this->*_f[3])();
+		break ;
+	default:
+		std::cout << "[ Probably complaining about insignificant problems ]" << std::endl;
+	}
 }
