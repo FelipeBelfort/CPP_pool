@@ -1,4 +1,4 @@
-NAME			=	scavTrap
+NAME			=	fragTrap
 
 GCC				=	c++
 
@@ -6,7 +6,7 @@ CFLAGS			=	-Wall -Wextra -Werror -std=c++98
 
 FILES			=	main
 
-CLASSES			=	ClapTrap ScavTrap
+CLASSES			=	ClapTrap ScavTrap FragTrap
 
 OBJS_DIR		=	objs/
 

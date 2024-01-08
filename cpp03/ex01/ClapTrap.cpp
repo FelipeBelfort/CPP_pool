@@ -69,7 +69,7 @@ void ClapTrap::beRepaired(unsigned int amount)
 
 void ClapTrap::takeDamage(unsigned int amount)
 {
-	std::cout << "ClapTrap " << this->_name << " took  a damage of " << amount;
+	std::cout << "ClapTrap " << this->_name << " took a damage of " << amount;
 	if (this->_life <= amount)
 	{
 		this->_life = 0;

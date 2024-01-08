@@ -1,12 +1,13 @@
 #include "ScavTrap.hpp"
+#include "FragTrap.hpp"
 
 int main()
 {
 	ClapTrap test01("Test01");
-	ScavTrap test02("Test02");
-	ScavTrap test03("Test03");
+	FragTrap test02("Test02");
+	FragTrap test03("Test03");
 	ScavTrap test04("Test04");
-	ScavTrap test05("Test05");
+	FragTrap test05("Test05");
 
 	test01.attack("wind");
 	test01.attack("fire");
@@ -24,4 +25,5 @@ int main()
 	test05.attack("Captain Planet");
 	test05.takeDamage(99);
 	test05.beRepaired(50);
+	test05.highFivesGuys();
 }
