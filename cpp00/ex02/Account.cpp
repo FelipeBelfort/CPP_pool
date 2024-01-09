@@ -69,7 +69,7 @@ void	Account::makeDeposit(int deposit)
 	this->_nbDeposits++;
 	_totalNbDeposits++;
 	_totalAmount += deposit;
-	std::cout << "index:" << this->_accountIndex << ";p_amount:" << this->_amount << ";";
+	std::cout << " index:" << this->_accountIndex << ";p_amount:" << this->_amount << ";";
 	this->_amount += deposit;
 	std::cout << "deposit:" << deposit << ";amount:" << this->_amount;
 	std::cout << ";nb_deposit:" << _nbDeposits << std::endl;
@@ -78,7 +78,7 @@ void	Account::makeDeposit(int deposit)
 bool	Account::makeWithdrawal(int withdrawal)
 {
 	_displayTimestamp();
-	std::cout << "index:" << _accountIndex << ";p_amount:" << this->_amount << ";withdrawal:";
+	std::cout << " index:" << _accountIndex << ";p_amount:" << this->_amount << ";withdrawal:";
 	if (withdrawal > checkAmount())
 	{
 		std::cout << "refused" << std::endl;
@@ -100,10 +100,13 @@ void	Account::displayStatus(void) const
 	std::cout << this->_nbWithdrawals << std::endl;
 }
 
-void	Account::_displayTimestamp(void)
+void Account::_displayTimestamp(void)
 {
-	std::time_t currentTime = std::time(NULL);
-	struct std::tm *timeInfo = std::localtime(&currentTime);
+    std::time_t currentTime = std::time(NULL);
+    std::tm* timeInfo = std::localtime(&currentTime);
 
-	std::cout << "[" << std::put_time(timeInfo, "%Y%m%d_%H%M%S") << "]";
+    char buffer[100];
+    strftime(buffer, sizeof(buffer), "[%Y%m%d_%H%M%S]", timeInfo);
+
+    std::cout << buffer;
 }
