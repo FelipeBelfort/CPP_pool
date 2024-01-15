@@ -1,4 +1,4 @@
-NAME			=	poli00
+NAME			=	poli03
 
 GCC				=	c++
 
@@ -6,7 +6,7 @@ CFLAGS			=	-Wall -Wextra -Werror -std=c++98
 
 FILES			=	main
 
-CLASSES			=	Animal Cat Dog WrongAnimal WrongCat
+CLASSES			=	AAnimal Cat Dog WrongAnimal WrongCat Brain
 
 OBJS_DIR		=	objs/
 
