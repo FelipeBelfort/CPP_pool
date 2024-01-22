@@ -1,4 +1,4 @@
-NAME			=	interface&recap
+NAME			=	interface_recap
 
 GCC				=	c++
 
@@ -6,7 +6,8 @@ CFLAGS			=	-Wall -Wextra -Werror -std=c++98
 
 FILES			=	main
 
-CLASSES			=	AAnimal Cat Dog WrongAnimal WrongCat Brain
+# CLASSES			=	AMateria Ice Cure ICharacter IMateriaSource Character MateriaSource
+CLASSES			=	AMateria Ice ICharacter Character
 
 OBJS_DIR		=	objs/
 
