@@ -1,21 +1,27 @@
-#include "Ice.hpp"
 #include "Character.hpp"
+#include "MateriaSource.hpp"
+#include "Ice.hpp"
+#include "Cure.hpp"
 
 int	main(void)
 {
-	ICharacter	*character1 = new Character("Ze");
-	ICharacter	*character2 = new Character("Bob");
-
-	character1->equip(new Ice());
-	character1->equip(new Ice());
-
-	character1->use(0, *character2);
-	character1->use(1, *character2);
-	character1->use(4, *character2);
-	character1->use(2, *character2);
-
-	delete character1;
-	delete character2;
-
+	Floor	floor;
+	IMateriaSource* src = new MateriaSource();
+	src->learnMateria(new Ice());
+	src->learnMateria(new Cure());
+	ICharacter* me = new Character("me");
+	AMateria* tmp = NULL;
+	tmp = src->createMateria("ice");
+	me->equip(tmp);
+	tmp = src->createMateria("cure");
+	me->equip(tmp);
+	ICharacter* bob = new Character("bob");
+	me->use(0, *bob);
+	me->unequip(0);
+	me->use(1, *bob);
+	delete bob;
+	delete me;
+	delete src;
+	floor.cleanAll();
 	return 0;
 }

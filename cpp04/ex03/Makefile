@@ -6,12 +6,13 @@ CFLAGS			=	-Wall -Wextra -Werror -std=c++98
 
 FILES			=	main
 
-# CLASSES			=	AMateria Ice Cure ICharacter IMateriaSource Character MateriaSource
-CLASSES			=	AMateria Ice ICharacter Character
+CLASSES			=	AMateria Ice Cure Character MateriaSource Node Floor
+
+INTERFACES		=	ICharacter IMateriaSource
 
 OBJS_DIR		=	objs/
 
-HEADER			=	$(CLASSES:=.hpp)
+HEADER			=	$(CLASSES:=.hpp) $(INTERFACES:=.hpp)
 
 SRC				=	$(FILES:=.cpp) $(CLASSES:=.cpp)
 

@@ -1,8 +1,12 @@
 #ifndef	AMATERIA_HPP
 # define AMATERIA_HPP
 
+// #pragma once
+
 # include <iostream>
 # include "ICharacter.hpp"
+
+class ICharacter;
 
 class AMateria
 {

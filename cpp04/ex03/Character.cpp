@@ -31,6 +31,7 @@ Character	&Character::operator=(const Character &copy)
 				this->_materias[i] = copy._materias[i]->clone();
 		}
 	}
+	return *this;
 }
 
 const std::string	&Character::getName(void) const
@@ -38,19 +39,22 @@ const std::string	&Character::getName(void) const
 	return this->_name;
 }
 
-void	Character::equip(AMateria *m)
+void	Character::equip(AMateria* m)
 {
 	for (int i = 0; i < 4; i++)
+	{
+		if (m == this->_materias[i] || (i - 1 >= 0 && m == this->_materias[i - 1]))
+			break;
 		if (!this->_materias[i])
-			if (this->_materias[i] = m)
-				break ;
+			this->_materias[i] = m;
+	}
 }
 
 void	Character::unequip(int idx)
 {
 	if (idx >= 0 && idx < 4)
 	{
-		//pensar como lidar com o lixo
+		floor.collect(this->_materias[idx]);
 		this->_materias[idx] = NULL;
 	}
 }
