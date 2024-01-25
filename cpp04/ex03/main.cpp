@@ -5,7 +5,6 @@
 
 int	main(void)
 {
-	Floor	floor;
 	IMateriaSource* src = new MateriaSource();
 	src->learnMateria(new Ice());
 	src->learnMateria(new Cure());
@@ -22,6 +21,6 @@ int	main(void)
 	delete bob;
 	delete me;
 	delete src;
-	floor.cleanAll();
+	Floor::cleanAll();
 	return 0;
 }

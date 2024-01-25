@@ -7,6 +7,7 @@ class Node
 {
 private:
 	AMateria	*_data;
+	Node		*_next;
 
 public:
 	Node(AMateria *data);
@@ -15,9 +16,8 @@ public:
 	Node	&operator=(const Node &copy);
 
 	void	push(Node *node);
-	
+	Node	*getNext(void);
 
-	Node		*next;
 };
 
 #endif

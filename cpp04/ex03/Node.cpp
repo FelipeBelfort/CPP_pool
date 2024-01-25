@@ -1,6 +1,6 @@
 #include "Node.hpp"
 
-Node::Node(AMateria *data) : _data(data), next(NULL)
+Node::Node(AMateria *data) : _data(data), _next(NULL)
 {}
 
 Node::~Node(void)
@@ -9,7 +9,7 @@ Node::~Node(void)
 		delete this->_data;
 }
 
-Node::Node(const Node &copy) : _data(NULL), next(NULL)
+Node::Node(const Node &copy) : _data(NULL), _next(NULL)
 {
 	(void) copy;
 }
@@ -22,5 +22,10 @@ Node	&Node::operator=(const Node &copy)
 
 void	Node::push(Node *node)
 {
-	this->next = node;
+	this->_next = node;
+}
+
+Node	*Node::getNext(void)
+{
+	return this->_next;
 }

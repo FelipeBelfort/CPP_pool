@@ -15,8 +15,8 @@ public:
 	Floor(const Floor &copy);
 	Floor	&operator=(const Floor &copy);
 
-	void	collect(AMateria *garbage);
-	void	cleanAll(void);
+	static void	collect(AMateria *garbage);
+	static void	cleanAll(void);
 };
 
 

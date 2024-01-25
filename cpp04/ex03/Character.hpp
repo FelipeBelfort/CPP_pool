@@ -8,7 +8,6 @@
 class Character : public ICharacter
 {
 private:
-	Floor		floor;
 	std::string	_name;
 	AMateria	*_materias[4];
 

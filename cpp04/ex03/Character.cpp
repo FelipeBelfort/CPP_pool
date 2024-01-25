@@ -41,20 +41,27 @@ const std::string	&Character::getName(void) const
 
 void	Character::equip(AMateria* m)
 {
+	if (!m)
+		return ;
+	for (int i = 0; i < 4; i++)
+		if (m == this->_materias[i])
+			return ;
 	for (int i = 0; i < 4; i++)
 	{
-		if (m == this->_materias[i] || (i - 1 >= 0 && m == this->_materias[i - 1]))
-			break;
 		if (!this->_materias[i])
+		{
 			this->_materias[i] = m;
+			return ;
+		}
 	}
+	Floor::collect(m);
 }
 
 void	Character::unequip(int idx)
 {
-	if (idx >= 0 && idx < 4)
+	if (idx >= 0 && idx < 4 && this->_materias[idx])
 	{
-		floor.collect(this->_materias[idx]);
+		Floor::collect(this->_materias[idx]);
 		this->_materias[idx] = NULL;
 	}
 }

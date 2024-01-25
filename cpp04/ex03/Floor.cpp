@@ -28,8 +28,8 @@ void	Floor::collect(AMateria *garbage)
 		Floor::node = tmp;
 	else
 	{
-		while (last->next)
-			last = last->next;
+		while (last->getNext())
+			last = last->getNext();
 		last->push(tmp);
 	}
 }
@@ -41,7 +41,7 @@ void	Floor::cleanAll(void)
 	while (Floor::node)
 	{
 		curr = Floor::node;
-		Floor::node = Floor::node->next;
+		Floor::node = Floor::node->getNext();
 		delete curr;
 	}
 }
