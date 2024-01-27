@@ -1,4 +1,4 @@
-NAME			=	bureaucrat02
+NAME			=	bureaucrat03
 
 GCC				=	c++
 
@@ -6,7 +6,7 @@ CFLAGS			=	-Wall -Wextra -Werror -std=c++98
 
 FILES			=	main
 
-CLASSES			=	Bureaucrat AForm PresidentialPardonForm RobotomyRequestForm ShrubberyCreationForm
+CLASSES			=	Bureaucrat AForm PresidentialPardonForm RobotomyRequestForm ShrubberyCreationForm Intern
 
 OBJS_DIR		=	objs/
 
