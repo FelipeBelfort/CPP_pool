@@ -18,7 +18,8 @@ Form::Form(const Form &copy) :  _name(copy.getName()), _gradeToSign(copy.getGrad
 
 Form	&Form::operator=(const Form &copy)
 {
-	std::cout << "A form can't be atributed to another." << std::endl;
+
+	std::cout << copy.getName() << " can't be atributed to " << this->getName() << std::endl;
 	return *this;
 }
 

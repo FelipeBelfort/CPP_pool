@@ -2,9 +2,9 @@
 # define BUREAUCRAT_HPP
 
 # include <iostream>
-# include "Form.hpp"
+# include "AForm.hpp"
 
-class Form;
+class AForm;
 
 class Bureaucrat
 {
@@ -20,7 +20,8 @@ public:
 	std::string	getName(void) const;
 	int			getGrade(void) const;
 	void		setGrade(int newGrade);
-	void		signForm(Form &form) const;
+	void		signAForm(AForm &form);
+	void		executeForm(const AForm &form);
 	Bureaucrat	&operator++(void);
 	Bureaucrat	&operator--(void);
 	Bureaucrat	operator++(int);

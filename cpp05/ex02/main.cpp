@@ -1,19 +1,19 @@
 #include "Bureaucrat.hpp"
-#include "Form.hpp"
+#include "AForm.hpp"
 
 int main() {
     try {
-        // Creating a Bureaucrat and a Form
+        // Creating a Bureaucrat and a AForm
         Bureaucrat bureaucrat("John", 41);
-        Form form("Document", 40, 30);
+        AForm AForm("Document", 40, 30);
 
-        // Displaying initial information
+        // Displaying initial inAFormation
         std::cout << "Initial Bureaucrat:\n" << bureaucrat << std::endl;
-        std::cout << "Initial Form:\n" << form << std::endl;
+        std::cout << "Initial AForm:\n" << AForm << std::endl;
 
-        // Signing the form (should throw GradeTooLowException)
+        // Signing the AForm (should throw GradeTooLowException)
         try {
-            bureaucrat.signForm(form);
+            bureaucrat.signAForm(AForm);
         } catch (const Bureaucrat::GradeTooLowException& e) {
             std::cout << "Exception caught: " << e.what() << std::endl;
         }
@@ -22,14 +22,14 @@ int main() {
         ++bureaucrat;
         std::cout << "After increment: " << bureaucrat << std::endl;
 
-        // Trying to sign the form again (should succeed now)
-        bureaucrat.signForm(form);
-        std::cout << "After signing: " << form << std::endl;
+        // Trying to sign the AForm again (should succeed now)
+        bureaucrat.signAForm(AForm);
+        std::cout << "After signing: " << AForm << std::endl;
 
-        // Trying to create a Form with a very high signing grade (should throw GradeTooHighException)
+        // Trying to create a AForm with a very high signing grade (should throw GradeTooHighException)
         try {
-            Form highGradeForm("HighGradeDoc", 200, 100);
-        } catch (const Form::GradeTooHighException& e) {
+            AForm highGradeAForm("HighGradeDoc", 200, 100);
+        } catch (const AForm::GradeTooHighException& e) {
             std::cout << "Exception caught: " << e.what() << std::endl;
         }
 
@@ -37,12 +37,13 @@ int main() {
         std::cout << "Exception caught: " << e.what() << std::endl;
     } catch (const Bureaucrat::GradeTooLowException& e) {
         std::cout << "Exception caught: " << e.what() << std::endl;
-    } catch (const Form::GradeTooHighException& e) {
+    } catch (const AForm::GradeTooHighException& e) {
         std::cout << "Exception caught: " << e.what() << std::endl;
-    } catch (const Form::GradeTooLowException& e) {
+    } catch (const AForm::GradeTooLowException& e) {
         std::cout << "Exception caught: " << e.what() << std::endl;
     } catch (const std::exception& e) {
         std::cout << "General exception caught: " << e.what() << std::endl;
     }
+
     return 0;
 }
