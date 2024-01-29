@@ -1,6 +1,7 @@
-# include "ShrubberyCreationForm.hpp"
-# include "RobotomyRequestForm.hpp"
-# include "PresidentialPardonForm.hpp"
+#include "ShrubberyCreationForm.hpp"
+#include "RobotomyRequestForm.hpp"
+#include "PresidentialPardonForm.hpp"
+#include "Intern.hpp"
 
 static void testForm(Bureaucrat* bur, AForm* form)
 {
@@ -11,9 +12,10 @@ static void testForm(Bureaucrat* bur, AForm* form)
 
 int main()
 {
-    ShrubberyCreationForm* shrub = new ShrubberyCreationForm("Patrick");
-    RobotomyRequestForm* robot = new RobotomyRequestForm("Bob");
-    PresidentialPardonForm* pardon = new PresidentialPardonForm("Pef");
+    Intern test;
+    AForm* shrub = Intern::alsoMakeForm("ShrubberyCreationForm", "Patrick");
+    AForm* robot = Intern::alsoMakeForm("RobotomyRequestForm", "Bob");
+    AForm* pardon = test.makeForm("PresidentialPardonForm", "Pef");
 
     Bureaucrat* bob = new Bureaucrat("Bob", 120);
     Bureaucrat* james = new Bureaucrat("James", 33);
