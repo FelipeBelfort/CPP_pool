@@ -2,7 +2,6 @@
 #include "Form.hpp"
 
 int main() {
-    try {
         // Creating a Bureaucrat and a Form
         Bureaucrat bureaucrat("John", 41);
         Form form("Document", 40, 30);
@@ -12,11 +11,7 @@ int main() {
         std::cout << "Initial Form:\n" << form << std::endl;
 
         // Signing the form (should throw GradeTooLowException)
-        try {
             bureaucrat.signForm(form);
-        } catch (const Bureaucrat::GradeTooLowException& e) {
-            std::cout << "Exception caught: " << e.what() << std::endl;
-        }
 
         // Incrementing Bureaucrat's grade
         ++bureaucrat;
@@ -28,21 +23,18 @@ int main() {
 
         // Trying to create a Form with a very high signing grade (should throw GradeTooHighException)
         try {
-            Form highGradeForm("HighGradeDoc", 200, 100);
-        } catch (const Form::GradeTooHighException& e) {
+            Form highGradeForm("HighGradeDoc", 0, 100);
+        }
+        catch (const std::exception &e) {
+            std::cout << "Exception caught: " << e.what() << std::endl;
+        }
+        // Trying to create a Form with a very high signing grade (should throw GradeTooHighException)
+        try {
+            Form lowGradeForm("LowGradeDoc", 200, 100);
+        }
+        catch (const std::exception &e) {
             std::cout << "Exception caught: " << e.what() << std::endl;
         }
 
-    } catch (const Bureaucrat::GradeTooHighException& e) {
-        std::cout << "Exception caught: " << e.what() << std::endl;
-    } catch (const Bureaucrat::GradeTooLowException& e) {
-        std::cout << "Exception caught: " << e.what() << std::endl;
-    } catch (const Form::GradeTooHighException& e) {
-        std::cout << "Exception caught: " << e.what() << std::endl;
-    } catch (const Form::GradeTooLowException& e) {
-        std::cout << "Exception caught: " << e.what() << std::endl;
-    } catch (const std::exception& e) {
-        std::cout << "General exception caught: " << e.what() << std::endl;
-    }
     return 0;
 }

@@ -59,16 +59,20 @@ void	Bureaucrat::setGrade(int newGrade)
 
 void	Bureaucrat::signForm(AForm &form) const
 {
-	try
+	if (form.getIsSigned())
+		std::cout << form.getName() << " is already signed"<< std::endl;
+	else
 	{
-		form.beSigned(*this);
-		std::cout << this->getName() << " signed form " << form.getName() << std::endl;
+		try
+		{
+			form.beSigned(*this);
+			std::cout << this->getName() << " signed form " << form.getName() << std::endl;
+		}
+		catch(const AForm::GradeTooLowException &e)
+		{
+			std::cout << this->getName() << " couldn’t sign form " << form.getName() << " because " << e.what() << std::endl;
+		}
 	}
-	catch(const AForm::GradeTooLowException &e)
-	{
-		std::cout << this->getName() << " couldn’t sign form " << form.getName() << " because " << e.what() << std::endl;
-	}
-
 }
 
 void	Bureaucrat::executeForm(const AForm &form) const

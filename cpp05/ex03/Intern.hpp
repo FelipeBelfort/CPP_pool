@@ -15,7 +15,8 @@ public:
 	Intern(const Intern &copy);
 	Intern &operator=(const Intern &copy);
 
-	AForm	*makeForm(std::string name, std::string target);
+	AForm			*makeForm(std::string name, std::string target);
+	static AForm	*factory(int i, std::string target);
 	static AForm	*alsoMakeForm(std::string name, std::string target);
 };
 
