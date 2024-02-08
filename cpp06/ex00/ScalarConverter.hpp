@@ -20,8 +20,8 @@ class ScalarConverter
 private:
 	ScalarConverter(void);
 	~ScalarConverter(void);
-
-	static double	_value;
+	ScalarConverter(const ScalarConverter &copy);
+	ScalarConverter &operator=(const ScalarConverter &copy);
 public:
 	static void	convert(char *input);
 };

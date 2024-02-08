@@ -10,6 +10,17 @@ ScalarConverter::~ScalarConverter(void)
 {
 }
 
+ScalarConverter::ScalarConverter(const ScalarConverter &copy)
+{
+	(void)copy;
+}
+
+ScalarConverter &ScalarConverter::operator=(const ScalarConverter &copy)
+{
+	(void)copy;
+	return *this;
+}
+
 static	void	showVoid(char *input)
 {
 	(void)input;
@@ -41,16 +52,6 @@ static void displayChar(int nb)
 	std::cout << std::endl;
 }
 
-static void	showInt(char *input)
-{
-	int	nb = atoi(input);
-
-	displayChar(nb);
-	std::cout << "int: " << nb << "\n";
-	std::cout << "float: " << static_cast<float>(nb) << ".0f\n";
-	std::cout << "double: " << static_cast<double>(nb) << ".0" << std::endl;
-}
-
 static void displayInt(double nb)
 {
 	std::cout << "int: ";
@@ -68,8 +69,9 @@ static void	displayFloat(double nb)
 		std::cout << "nan";
 	else
 		std::cout << static_cast<float>(nb);
-	if ((nb - static_cast<int>(nb) == 0 || (nb > 1000000 || nb < -1000000)) && (nb != HUGE_VALF && nb != -HUGE_VALF))
-		std::cout << ".0";
+	if (nb < 1000000 && nb > -1000000)
+		if (nb - static_cast<int>(nb) == 0)
+			std::cout << ".0";
 	std::cout << "f" << std::endl;
 }
 
@@ -80,9 +82,20 @@ static void	displayDouble(double nb)
 		std::cout << "nan";
 	else
 		std::cout << nb;
-	if ((nb - static_cast<int>(nb) == 0 || (nb > 1000000 || nb < -1000000)) && (nb != HUGE_VAL && nb != -HUGE_VAL))
-		std::cout << ".0";
+	if (nb < 1000000 && nb > -1000000)
+		if (nb - static_cast<int>(nb) == 0)
+			std::cout << ".0";
 	std::cout << std::endl;
+}
+
+static void	showInt(char *input)
+{
+	int	nb = atoi(input);
+
+	displayChar(nb);
+	std::cout << "int: " << nb << "\n";
+	displayFloat(nb);
+	displayDouble(nb);
 }
 
 static void	showFloat(char *input)
@@ -106,12 +119,15 @@ static void	showDouble(char *input)
 	displayDouble(nb);
 }
 
-static bool	isValid(char *ptr)
+static bool	isValid(char *input, char *ptr, double value)
 {
-	std::string	str = ptr;
+	std::string	tmp_ptr = ptr;
+	std::string	tmp_input = input;
+	size_t		len_input = tmp_input.length();
 
-	// std::cout << "len: " << len << " ptr: |" << str << "|\n";
-	return (str.length() <= 1);
+	if (!len_input || (!value && len_input > 1) || (ptr && tmp_ptr.length() > 1) || (value && *ptr && tmp_ptr.at(0) != 'f'))
+		return false;
+	return true;
 }
 
 static int	findType(char *input)
@@ -120,21 +136,14 @@ static int	findType(char *input)
 	double	value = strtod(input, &ptr);
 	int		value_int = atoi(input);
 
-	// std::cout << "test\ninput: |" << input << "| ptr: |" << ptr << "| value: " << value << " int: " << value_int << std::endl;
-	// if (!input[0] || (!value && ptr[0] && ptr[1]) || (value && ((ptr[0] && ptr[0] != 'f') || ptr[1])))
-	if (!input[0] || !isValid(ptr))
+	if (!input[0] || !isValid(input, ptr, value))
 		return T_VOID;
-		// return (std::cout << "void  ptr[0]|" << ptr[0] << "| ptr[1]|" << (ptr[1] ? ptr[1] : 'p') << "|" << std::endl, T_VOID);
 	if (!value && ptr && input[0] == ptr[0])
 		return T_CHAR;
-		// return (std::cout << "char" << std::endl, T_CHAR);
 	if (ptr && ptr[0] == 'f' && !ptr[1])
 		return T_FLOAT;
-		// return (std::cout << "float" << std::endl, T_FLOAT);
 	if ( value >= INT_MIN && value <= INT_MAX && value - value_int == 0)
 		return T_INT;
-		// return (std::cout << "int" << std::endl, T_INT);
-	// return (std::cout << "double" << std::endl, T_DOUBLE);
 	return T_DOUBLE;
 }
 
