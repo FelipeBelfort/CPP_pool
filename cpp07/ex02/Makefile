@@ -1,4 +1,4 @@
-NAME			=	iter
+NAME			=	array
 
 GCC				=	c++
 
@@ -12,8 +12,8 @@ OBJ				=	$(addprefix $(OBJS_DIR), $(SRC:.cpp=.o))
 
 RM				=	rm -fr
 
-$(OBJS_DIR)%.o	: %.cpp iter.hpp
-				$(GCC) $(CFLAGS) -c $< -o $@
+$(OBJS_DIR)%.o	: %.cpp array.hpp
+			$(GCC) $(CFLAGS) -c $< -o $@
 
 all				:	$(NAME)
 

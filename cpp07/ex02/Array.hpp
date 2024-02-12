@@ -10,26 +10,41 @@ private:
 	T				*_lst;
 	size_t			_size;
 public:
-	Array(void);
-	Array(size_t size = 0) : _size(size)
+	Array(size_t size = 0) : _lst(new T[size]), _size(size)
 	{
-		_lst = new[size] T;
 	}
-	~Array();
-	Array(const Array &copy) : _size(copy.size())
+
+	~Array()
 	{
-		_lst = new[size] T;
+		delete [] this->_lst;
+	}
+
+	Array(const Array &copy) : _lst(NULL)
+	{
+		*this = copy;
+	}
+
+	Array &operator=(const Array &copy)
+	{
+		if (this == &copy)
+			return *this;
+		if (_lst)
+			delete [] _lst;
+		_lst = new T[copy.size()];
+		this->_size = copy.size();
 		for (size_t i = 0; i < this->_size; i++)
-		{
-			
-		}
-
+			_lst[i] = copy._lst[i];
+		return *this;
 	}
 
-	Array &operator=(const Array &copy);
-	Array &operator[](const unsigned int index);
+	T &operator[](const unsigned int index)
+	{
+		if (index >= this->_size)
+			throw IndexNotFoundException();
+		return this->_lst[index];
+	}
 
-	const size_t	size(void) const
+	size_t	size(void) const
 	{
 		return _size;
 	}
@@ -44,14 +59,5 @@ public:
 		}
 	};
 };
-
-Array::Array(/* args */)
-{
-}
-
-Array::~Array()
-{
-}
-
 
 #endif
