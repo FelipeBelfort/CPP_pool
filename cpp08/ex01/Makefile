@@ -1,19 +1,25 @@
-NAME			=	array
+NAME			=	span
 
 GCC				=	c++
 
 CFLAGS			=	-Wall -Wextra -Werror -std=c++98
 
-SRC				=	main.cpp
+FILES			=	main
+
+CLASSES			=	Span
 
 OBJS_DIR		=	objs/
+
+HEADER			=	$(CLASSES:=.hpp)
+
+SRC				=	$(FILES:=.cpp) $(CLASSES:=.cpp)
 
 OBJ				=	$(addprefix $(OBJS_DIR), $(SRC:.cpp=.o))
 
 RM				=	rm -fr
 
-$(OBJS_DIR)%.o	: %.cpp Array.hpp
-			$(GCC) $(CFLAGS) -c $< -o $@
+$(OBJS_DIR)%.o	: %.cpp $(HEADER)
+				$(GCC) $(CFLAGS) -c $< -o $@
 
 all				:	$(NAME)
 

@@ -1,4 +1,4 @@
-NAME			=	array
+NAME			=	easyfind
 
 GCC				=	c++
 
@@ -12,8 +12,8 @@ OBJ				=	$(addprefix $(OBJS_DIR), $(SRC:.cpp=.o))
 
 RM				=	rm -fr
 
-$(OBJS_DIR)%.o	: %.cpp Array.hpp
-			$(GCC) $(CFLAGS) -c $< -o $@
+$(OBJS_DIR)%.o	: %.cpp easyfind.hpp
+				$(GCC) $(CFLAGS) -c $< -o $@
 
 all				:	$(NAME)
 
