@@ -1,6 +1,6 @@
 #include "Span.hpp"
 
-Span::Span(size_t nb) : _max_size(nb)//, _max(-2147483648), _min(2147483647)
+Span::Span(size_t nb) : _max_size(nb)
 {
 }
 
@@ -32,15 +32,14 @@ int		Span::longestSpan(void)
 	if (size == 1)
 		throw OnlyOneNumberStoredException();
 	tmp.sort();
-	return (abs(abs(*(tmp.begin())) - abs(*(tmp.end()))));
+	return (abs(abs(*(--tmp.end())) - abs(*(tmp.begin()))));
 }
 
 int		Span::shortestSpan(void)
 {
 	std::list<int>	tmp(this->_lst);
 	int				size = this->_lst.size();
-	int				a = 0;
-	int				b;
+	int				shortest_span = 0;
 
 	if (!size)
 		throw NoNumbersStoredException();
@@ -53,11 +52,14 @@ int		Span::shortestSpan(void)
 	tmp.reverse();
 	for (std::list<int>::iterator i = tmp.begin(); i != tmp.end(); i++)
 	{
-		b = abs((*i++) - *(i--));
-		if (!a || b < a)
-			a = b;
+		int	tmp_int = *(i++);
+		if (i == tmp.end())
+			break ;
+		int	tmp_span = abs(tmp_int - *(i--));
+		if (!shortest_span || tmp_span < shortest_span)
+			shortest_span = tmp_span;
 	}
-	return a;
+	return shortest_span;
 }
 
 void	Span::addNumber(int nb)

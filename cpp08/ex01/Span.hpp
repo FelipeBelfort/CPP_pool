@@ -9,8 +9,6 @@ class Span
 {
 private:
 	size_t			_max_size;
-	// int				_max;
-	// int				_min;
 	std::list<int>	_lst;
 
 public:

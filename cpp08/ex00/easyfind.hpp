@@ -2,7 +2,6 @@
 # define EASYFIND_HPP
 
 # include <algorithm>
-# include <vector>
 # include <iostream>
 
 template <typename T>
@@ -16,7 +15,6 @@ void	easyfind(T container, int index)
 	else
 		std::cout << "Value not found" << std::endl;
 }
-
 
 #endif
 
