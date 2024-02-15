@@ -24,7 +24,8 @@ public:
 
 
 	void	fillMap(bool data);
-	void	parseDate()
+	void	parseDate(std::string str);
+	void	parseLine()
 };
 
 BitcoinExchange::BitcoinExchange(/* args */)
