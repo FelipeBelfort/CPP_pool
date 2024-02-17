@@ -8,24 +8,25 @@ BitcoinExchange::BitcoinExchange(char *data, char *input)
 	this->_db_file.open(data);
 	if (!this->_db_file.is_open())
 		return ;
-	(void)input;
-	// this->_input_file.open(input);
-	// if (!this->_input_file.is_open())
-	// {
-	// 	this->_db_file.close();
-	// 	return ;
-	// }
+	// (void)input;
+	this->_input_file.open(input);
+	if (!this->_input_file.is_open())
+	{
+		this->_db_file.close();
+		return ;
+	}
 	this->fillData();
+	this->readInput();
+	// DEBUG
 	// this->fillMap(DATA);
 	// this->fillMap(INPUT);
 	this->_db_file.close();
-	// this->_input_file.close();
+	this->_input_file.close();
 
 }
 
-BitcoinExchange::~BitcoinExchange()
+BitcoinExchange::~BitcoinExchange(void)
 {
-
 }
 
 void	BitcoinExchange::fillData()
@@ -34,16 +35,14 @@ void	BitcoinExchange::fillData()
 
 		// std::map<std::string, double>::iterator	it = this->_data.begin();
 	while (std::getline(this->_db_file, tmp))
-	{
 		this->parseDataLine(tmp);
-	}
-
 }
 
 void	BitcoinExchange::parseDataLine(std::string str)
 {
 	std::string												key;
 	std::pair<std::map<std::string, float>::iterator, bool>	ret;
+	float													nb;
 
 	// std::cout << "size => " << str.size() << " str[10] => " << str[10] << " not of => " << str.find_first_not_of("-0123456789,.") << " first of => " << str.find_first_of("0123456789", 11) << std::endl;
 	if (str.size() < 12 || str[10] != ',' || str.find_first_not_of("-0123456789,.") != std::string::npos || str.find_first_of("0123456789", 11) != 11)
@@ -52,8 +51,11 @@ void	BitcoinExchange::parseDataLine(std::string str)
 	key = this->parseDate(str.substr(0, 10));
 	if (key.empty())
 		return ;
-	ret = this->_data.insert(std::pair<std::string, double>(key, std::atof(str.c_str() + 11)));
-	std::cout << (*ret.first).first << " => " << this->_data[key] << "#" << std::atof(str.c_str() + 11) << std::endl;
+	nb = std::atof(str.c_str() + 11);
+	if (nb < 0)
+		return ;
+	ret = this->_data.insert(std::pair<std::string, double>(key, nb));
+	// std::cout << (*ret.first).first << " => " << this->_data[key] << "#" << nb << std::endl;
 	if (ret.second == false)
 		return ;
 }
@@ -78,8 +80,8 @@ std::string	BitcoinExchange::parseDate(std::string str)
 	month = atoi(str.c_str() + 5);
 	day = atoi(str.c_str() + 8);
 
-	if (year < 2008 || year > 2024)
-		return NULL;
+	// if (year < 0)
+	// 	return NULL;
 	if (month < 1 || month > 12)
 		return NULL;
 	if (day < 1)
@@ -103,5 +105,56 @@ std::string	BitcoinExchange::parseDate(std::string str)
 	return str;
 }
 
+void	BitcoinExchange::readInput(void)
+{
+	std::string	tmp;
 
-// 2012-01-11 | a
+		// std::map<std::string, double>::iterator	it = this->_data.begin();
+	std::getline(this->_input_file, tmp);
+	// std::getline(this->_input_file, tmp);
+	while (std::getline(this->_input_file, tmp))
+		this->parseInputLine(tmp);
+}
+
+void	BitcoinExchange::parseInputLine(std::string str)
+{
+	std::string								key;
+	float									nb;
+	std::map<std::string, float>::iterator	it;
+	// std::pair<std::map<std::string, float>::iterator, bool>	ret;
+
+	// std::cout << "size => " << str.size() << " str[10] => " << str.find(" | ") << " not of => " << str.find_first_not_of("-0123456789|. ") << " first of => " << str.find_first_of("0123456789", 13) << std::endl;
+	// return ;
+	if (str.size() < 14 || str.find(" | ") != 10 || str.find_first_not_of("-0123456789| .") != std::string::npos || str.find_first_of("0123456789", 13) > 14)
+		return ;
+	// DEBUG
+	// std::cout << "data => " << str.substr(0, 10) << std::endl;
+	key = this->parseDate(str.substr(0, 10));
+	if (key.empty())
+		return ;
+	nb = std::atof(str.c_str() + 12);
+	if (nb < 0)
+		return ;
+	if (nb > 1000.0)
+		return ;
+	it = this->_data.find(key);
+	if (it != this->_data.end())
+		std::cout << (*it).first << " => " << nb * (*it).second << std::endl;
+	else
+	{
+		it = this->_data.lower_bound(key);
+		if (it != this->_data.end())
+			std::cout << (*it).first << " => " << nb * (*it).second << std::endl;
+		else
+			std::cout << "bla => " << std::endl;
+	}
+	// for (std::map<std::string, float>::iterator it = this->_data.begin(); it != this->_data.end(); it++)
+	// {
+	// 	// if ((*it).first == key)
+	// }
+
+	// ret = this->_data.insert(std::pair<std::string, double>(key, nb));
+	// std::cout << (*ret.first).first << " => " << this->_data[key] << "#" << nb << std::endl;
+	// if (ret.second == false)
+	// 	return ;
+}

@@ -3,12 +3,13 @@
 int	main(int argc, char **argv)
 {
 	char	*tmp = NULL;
-	char	data[] = "test.csv";
+	char	data[] = "data.csv";
 
 	if (argc > 1)
 		tmp = argv[1];
 	try
 	{
+		std::cout << tmp << std::endl;
 		BitcoinExchange	test(data, tmp);
 	}
 	catch(const std::exception& e)
