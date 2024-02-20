@@ -9,8 +9,8 @@
 class PmergeMe
 {
 private:
-	std::list<int>	_unsorted_list;
-	std::list<int>	_sorted_list;
+	std::vector<int>	_unsorted_vector;
+	std::vector<int>	_sorted_vector;
 	int				_tot;
 public:
 	PmergeMe(/* args */);
@@ -19,7 +19,9 @@ public:
 	PmergeMe	&operator=(const PmergeMe &copy);
 
 	void	fillContainer(int argc, char **argv);
-	void	sortList();
+
+	template <typename T>
+	void	sortList(std::vector<T> unsorted);
 };
 
 PmergeMe::PmergeMe(/* args */)

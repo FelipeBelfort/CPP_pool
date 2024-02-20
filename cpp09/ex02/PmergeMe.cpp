@@ -2,11 +2,12 @@
 
 void	PmergeMe::fillContainer(int argc, char **argv)
 {
-	int			tmp;
-	std::string	str;
+	long long int	tmp;
+	std::string		str;
+
 	for (size_t i = 1; i < argc; i++)
 	{
-		this._tot++;
+		this->_tot++;
 		str = argv[i];
 		tmp = atol(argv[i]);
 		if (tmp < 0)
@@ -15,22 +16,53 @@ void	PmergeMe::fillContainer(int argc, char **argv)
 			return;
 		if (tmp > __INT_MAX__)
 			return;
-		_unsorted_list.push_back(tmp);
+		this->_unsorted_vector.push_back(tmp);
 	}
 
 }
 
-void	PmergeMe::sortList()
+template <typename T>
+void	PmergeMe::sortList(std::vector<T> unsorted)
 {
-	std::list<int>	l_list;
-	std::list<int>	b_list;
+	std::vector<T>	sorted;
+	size_t			size = unsorted.size();
 
-	for (size_t i = 0; i < _tot; i++)
+	size -= size % 2;
+	for (size_t i = 0; i < size; i++)
 	{
-		if (this->_unsorted_list[i] < this->_unsorted_list[i + 1])
+		std::pair<T, T>	pair;
+		if (unsorted[i] < unsorted[i + 1])
 		{
-			l_list.push_back(this->_unsorted_list[i]);
+			pair.first = unsorted[i];
+			pair.second = unsorted[i + 1];
+		}
+		else
+		{
+			pair.first = unsorted[i + 1];
+			pair.first = unsorted[1];
 		}
 	}
 
 }
+
+
+/***
+ *	criar pares
+ *	
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+*/
