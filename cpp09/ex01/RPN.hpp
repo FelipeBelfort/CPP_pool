@@ -8,7 +8,7 @@
 class RPN
 {
 private:
-	std::stack<int>	_stack;
+	std::stack<float>	_stack;
 
 	void	calculateIt(int c);
 public:
@@ -30,6 +30,11 @@ public:
 		const char	*what() const throw();
 	};
 	class NumberOrOperatorException : public std::exception
+	{
+		public:
+		const char	*what() const throw();
+	};
+	class OverThanOnesException : public std::exception
 	{
 		public:
 		const char	*what() const throw();

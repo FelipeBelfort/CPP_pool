@@ -9,7 +9,7 @@ int	main(int argc, char **argv)
 		tmp = argv[1];
 	try
 	{
-		std::cout << tmp << std::endl;
+		// std::cout << tmp << std::endl;
 		BitcoinExchange	test(data, tmp);
 	}
 	catch(const std::exception& e)

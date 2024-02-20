@@ -88,12 +88,16 @@ void	BitcoinExchange::parseDate(std::string &str)
 
 	if (month < 1 || month > 12 || day < 1)
 		throw InputErrorException();
-	if (month == 2 && ((day > 29 && (year % 400 == 0 || (year % 4 == 0 && year % 100 != 0))) || day > 28))
-		throw InputErrorException();
 	if (day > 31 && ((month < 8 && month % 2) || (month > 7 && month % 2 == 0)))
 		throw InputErrorException();
 	if (day > 30 && ((month < 8 && month % 2 == 0) || (month > 7 && month % 2)))
 		throw InputErrorException();
+	if (month == 2 && day > 28)
+	{
+		if (day == 29 && (year % 400 == 0 || (year % 4 == 0 && year % 100 != 0)))
+			return ;
+		throw InputErrorException();
+	}
 }
 
 void	BitcoinExchange::readInput(void)
@@ -133,7 +137,7 @@ void	BitcoinExchange::parseInputLine(std::string &str)
 	nb = std::atof(str.c_str() + 12);
 	if (nb < 0)
 		throw NegativeNumberException();
-	if (nb > 1000.0)
+	if (nb >= 1000.0)
 		throw TooLargeNumberException();
 	it = this->_data.find(key);
 	if ((*it).first == key)
@@ -141,9 +145,9 @@ void	BitcoinExchange::parseInputLine(std::string &str)
 	else
 	{
 		it = this->_data.lower_bound(key);
-		if (it == this->_data.end())
+		if (--it == this->_data.end())
 			throw DateNotFoundException();
-		std::cout << (*it).first << " => " << nb << " = " << nb * (*it).second << std::endl;
+		std::cout << key << " => " << nb << " = " << nb * (*it).second << std::endl;
 	}
 }
 
@@ -184,5 +188,5 @@ const char	*BitcoinExchange::TooLargeNumberException::what() const throw()
 
 const char	*BitcoinExchange::DateNotFoundException::what() const throw()
 {
-	return "Error: date not found in the database (too old)";
+	return "Error: date not found in the database";
 }

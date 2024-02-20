@@ -21,9 +21,9 @@ RPN	&RPN::operator=(const RPN &copy)
 
 void	RPN::calculateIt(int c)
 {
-	int	last;
-	int	first;
-	int	result;
+	float	last;
+	float	first;
+	float	result;
 
 	if (this->_stack.size() < 2)
 		throw NumberOrOperatorException();
@@ -55,14 +55,17 @@ void	RPN::polishCalculator(std::string str)
 {
 	if (str.empty() || str.find_first_not_of(" 0123456789-+*/") != std::string::npos || (str.size() == 1 && str.find_first_of("-+/*") != std::string::npos))
 		throw InputErrorException();
-	if (str.size() == 1)
-		std::cout << static_cast<int>(str[0] - '0') << std::endl;
 	for (size_t i = str.find_first_not_of(" "); i != std::string::npos; i = str.find_first_not_of(" ", i))
 	{
 		if (str.find_first_of("-+/*", i) == i)
 			calculateIt(str.at(i));
 		else
-			this->_stack.push(atoi(str.c_str() + i));
+		{
+			float	tmp = atof(str.c_str() + i);
+			if (tmp < 0 || tmp > 9)
+				throw OverThanOnesException();
+			this->_stack.push(tmp);
+		}
 		i++;
 	}
 	if (this->_stack.size() != 1)
@@ -85,4 +88,8 @@ const char	*RPN::NumberOrOperatorException::what() const throw()
 	return "Error: there are not enough numbers or operators to do the operation";
 }
 
+const char	*RPN::OverThanOnesException::what() const throw()
+{
+	return "Error: you are only allowed to use between 0 and 9";
+}
 
