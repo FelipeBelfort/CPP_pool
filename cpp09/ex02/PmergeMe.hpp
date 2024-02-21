@@ -8,29 +8,27 @@
 
 class PmergeMe
 {
+	typedef std::list<std::pair<int, int> >	t_pair;
 private:
 	std::vector<int>	_unsorted_vector;
 	std::vector<int>	_sorted_vector;
-	int				_tot;
+	t_pair				_unsorted_list;
+	std::list<int>		_sorted_list;
+	int					_tot;
 public:
-	PmergeMe(/* args */);
+	PmergeMe(int argc, char **argv);
 	~PmergeMe();
 	PmergeMe(const PmergeMe &copy);
 	PmergeMe	&operator=(const PmergeMe &copy);
 
 	void	fillContainer(int argc, char **argv);
-
-	template <typename T>
-	void	sortList(std::vector<T> unsorted);
+	void	makePairList(int nb);
+	void	mergeList(t_pair &lst);
+	// template <typename T>
+	// void	sortList(std::vector<T> unsorted);
+	void	printList(const std::list<int> &lst);
+	void	printList(const t_pair &lst);
 };
-
-PmergeMe::PmergeMe(/* args */)
-{
-}
-
-PmergeMe::~PmergeMe()
-{
-}
 
 
 

@@ -6,7 +6,7 @@ CFLAGS			=	-Wall -Wextra -Werror -std=c++98
 
 FILES			=	main
 
-CLASSES			=	RPN
+CLASSES			=	PmergeMe
 
 OBJS_DIR		=	objs/
 
