@@ -6,7 +6,10 @@ PmergeMe::PmergeMe(int argc, char **argv)
 
 	this->printList(this->_unsorted_list);
 	mergeList(this->_unsorted_list);
-	this->printList(this->_unsorted_list);
+	// this->printList(this->_unsorted_list);
+	this->insertList(this->_unsorted_list);
+	// std::cout << std::endl;
+	// this->printList(this->_sorted_list);
 }
 
 PmergeMe::~PmergeMe()
@@ -92,6 +95,137 @@ void	PmergeMe::mergeList(t_pair &lst)
 	this->mergeList(lst2);
 	lst.merge(lst2);
 }
+
+void	PmergeMe::insertList(t_pair &lst)
+{
+	// size_t				size = lst.size();
+	std::list<int>::iterator	curr;
+	std::list<int>::iterator	test;
+	size_t	group_size = 2;
+	size_t	size_tmp = 2;
+
+	if (lst.front().first == -1)
+	{
+		lst.push_back(lst.front());
+		lst.pop_front();
+	}
+	this->_sorted_list.push_back(lst.front().second);
+	for (t_pair::iterator it = lst.begin(); it != lst.end(); it++)
+	{
+		if ((*it).first >= 0)
+			this->_sorted_list.push_back((*it).first);
+	}
+	// printList(this->_sorted_list);
+	printList(lst);
+
+
+
+	curr = this->_sorted_list.begin();
+	curr++;
+	// this->_sorted_list.push_back(lst.front().first);
+	for (t_pair::iterator it = lst.begin(); it != lst.end(); it++)
+	{
+		if (it != lst.begin())
+			it--;
+		std::list<std::pair<std::list<int>::iterator, t_pair::iterator> >	ptrs;
+		while (size_tmp-- && curr != this->_sorted_list.end() && it != lst.end())
+		{
+			std::pair<std::list<int>::iterator, t_pair::iterator> bla;
+			bla.first = ++curr;
+			bla.second = ++it;
+			ptrs.push_back(bla);
+			std::cout << "\nptrs ==> tosort == " << (*bla.second).second << " end ptr == " << *bla.first << std::endl;
+		}
+		std::list<std::pair<std::list<int>::iterator, t_pair::iterator> >::reverse_iterator	end = ptrs.rbegin();
+		for (std::list<std::pair<std::list<int>::iterator, t_pair::iterator> >::reverse_iterator	ptr = end; ptr != ptrs.rend(); ptr++)
+		{
+			std::cout << "\nbefore insert " << (*(*ptr).second).second << " to put before == " << *this->binarySearch((*(*ptr).second).second, this->_sorted_list.begin(), (*ptr).first) << std::endl;
+			printList(this->_sorted_list);
+			this->_sorted_list.insert(this->binarySearch((*(*ptr).second).second, this->_sorted_list.begin(), (*ptr).first), (*(*ptr).second).second);
+			std::cout << "after insert " << std::endl;
+			printList(this->_sorted_list);
+			end++;
+		}
+		size_tmp = group_size;
+		group_size = this->getGroupSize(size_tmp);
+		ptrs.clear();
+		if (it == lst.end())
+			break;
+		if (curr == this->_sorted_list.end())
+			curr--;
+			// this->_sorted_list.insert(this->binarySearch((*it).second, this->_sorted_list.begin(), curr), (*it).second);
+
+
+		// std::cout << *this->binarySearch((*it).second, this->_sorted_list.begin(), this->_sorted_list.end()) << std::endl;
+		// test = this->binarySearch((*it).second, this->_sorted_list.begin(), curr++);
+	}
+	// for (size_t i = 0; i < size; i++)
+	// {
+	// 	std::list<int>::iterator	beg = this->_sorted_list.begin();
+	// }
+	// for (size_t i = 0; i < 173; i++)
+	// {
+
+	// 	std::cout << "i => " << i << " result => " << this->getGroupSize(i) << std::endl;
+	// }
+
+}
+
+size_t	PmergeMe::getGroupSize(size_t nb)
+{
+	size_t	n1 = 0;
+	size_t	n2 = 2;
+	size_t	n3 = 2;
+
+	if (nb < 2)
+		return n3;
+	do {
+		n3 = n2 + n1 * 2;
+		n1 = n2;
+		n2 = n3;
+	} while (n3 <= nb);
+
+	return nb == n1 ? n3 : 0;
+	// return n3;
+}
+
+template <typename T>
+T	PmergeMe::binarySearch(int nb, T ita, T itb)
+{
+	size_t	step;
+	T		start;
+	T		mid;
+	T		end;
+
+	if (nb < *ita)
+		return ita;
+	start = ita;
+	end = itb;
+	mid = ita;
+	step = std::distance(start, end) / 2;
+	std::advance(mid, step);
+	while (step > 1)
+	{
+		// step /= 2;
+		step = std::distance(start, end);
+		// std::advance(mid, step);
+		if (nb < *mid)
+		{
+			end = mid;
+			std::advance(mid, -(step / 2));
+		}
+		else
+		{
+			start = mid;
+			std::advance(mid, step / 2);
+		}
+	}
+
+	std::cout << "\ntest binary " << " ita " << *ita << " itb " << *itb << std::endl;
+	std::cout << "nb => " << nb << " == start == " << *start << " == mid == " << *mid << " == end == " << *end << std::endl;
+	return nb > *mid ? ++mid : mid;
+}
+
 
 // static std::vector<int>	&splitVector(std::vector<int> &vec_a)
 // {

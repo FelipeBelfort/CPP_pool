@@ -24,10 +24,18 @@ public:
 	void	fillContainer(int argc, char **argv);
 	void	makePairList(int nb);
 	void	mergeList(t_pair &lst);
+	void	insertList(t_pair &lst);
+
+
+
+	template <typename T>
+	T		binarySearch(int nb, T ita, T itb);
+	size_t	getGroupSize(size_t nb);
 	// template <typename T>
 	// void	sortList(std::vector<T> unsorted);
 	void	printList(const std::list<int> &lst);
 	void	printList(const t_pair &lst);
+
 };
 
 
