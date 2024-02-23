@@ -5,10 +5,12 @@
 # include <list>
 # include <vector>
 # include <iostream>
+# include <sys/time.h>
 
 class PmergeMe
 {
 	typedef std::list<std::pair<int, int> >	t_pair;
+	typedef std::pair<std::list<int>::iterator, t_pair::iterator>	t_insert_list;
 private:
 	std::vector<int>	_unsorted_vector;
 	std::vector<int>	_sorted_vector;
@@ -22,9 +24,13 @@ public:
 	PmergeMe	&operator=(const PmergeMe &copy);
 
 	void	fillContainer(int argc, char **argv);
+
+	//			List		//
+
 	void	makePairList(int nb);
 	void	mergeList(t_pair &lst);
-	void	insertList(t_pair &lst);
+	void	sortList(void);
+	void	insertList(void);
 
 
 
@@ -35,7 +41,7 @@ public:
 	// void	sortList(std::vector<T> unsorted);
 	void	printList(const std::list<int> &lst);
 	void	printList(const t_pair &lst);
-
+	double	getTime(void);
 };
 
 

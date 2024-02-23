@@ -2,14 +2,20 @@
 
 PmergeMe::PmergeMe(int argc, char **argv)
 {
+	double	test = getTime();
 	this->fillContainer(argc, argv);
 
-	this->printList(this->_unsorted_list);
-	mergeList(this->_unsorted_list);
+	this->sortList();
 	// this->printList(this->_unsorted_list);
-	this->insertList(this->_unsorted_list);
+	// this->mergeList(this->_unsorted_list);
+	// this->printList(this->_unsorted_list);
+	// this->insertList(this->_unsorted_list);
 	// std::cout << std::endl;
-	// this->printList(this->_sorted_list);
+	if (!std::is_sorted(this->_sorted_list.begin(), _sorted_list.end()))
+		this->printList(this->_sorted_list);
+	else
+		std::cout << "OK" << std::endl;
+	std::cout << getTime() - test << std::endl;
 }
 
 PmergeMe::~PmergeMe()
@@ -17,6 +23,13 @@ PmergeMe::~PmergeMe()
 
 }
 
+double	PmergeMe::getTime(void)
+{
+	struct timeval currentTime;
+	gettimeofday(&currentTime, NULL);
+	// return ((currentTime.tv_sec * 1000000LL + currentTime.tv_usec) * 0.000001);
+	return ((currentTime.tv_sec + currentTime.tv_usec) * 0.00001);
+}
 
 void	PmergeMe::fillContainer(int argc, char **argv)
 {
@@ -34,6 +47,8 @@ void	PmergeMe::fillContainer(int argc, char **argv)
 			return;
 		if (tmp > __INT_MAX__)
 			return;
+		if (argc == 2)
+			return ;
 		this->_unsorted_vector.push_back(tmp);
 		makePairList(tmp);
 	}
@@ -84,91 +99,59 @@ void	PmergeMe::mergeList(t_pair &lst)
 	t_pair				lst2;
 	t_pair::iterator	it;
 
-	if (lst.size() == 1)
+	size = lst.size();
+	if (size == 1)
 		return;
-	size = lst.size() / 2;
 	it = lst.begin();
-	for (size_t i = 0; i < size; i++)
-		it++;
+	std::advance(it, size / 2);
 	lst2.splice(lst2.end(), lst, it, lst.end());
 	this->mergeList(lst);
 	this->mergeList(lst2);
 	lst.merge(lst2);
 }
 
-void	PmergeMe::insertList(t_pair &lst)
+void	PmergeMe::sortList(void)
 {
-	// size_t				size = lst.size();
-	std::list<int>::iterator	curr;
-	std::list<int>::iterator	test;
-	size_t	group_size = 2;
-	size_t	size_tmp = 2;
-
-	if (lst.front().first == -1)
+	this->mergeList(this->_unsorted_list);
+	if (this->_unsorted_list.front().first == -1)
 	{
-		lst.push_back(lst.front());
-		lst.pop_front();
+		this->_unsorted_list.push_back(this->_unsorted_list.front());
+		this->_unsorted_list.pop_front();
 	}
-	this->_sorted_list.push_back(lst.front().second);
-	for (t_pair::iterator it = lst.begin(); it != lst.end(); it++)
-	{
+	this->_sorted_list.push_back(this->_unsorted_list.front().second);
+	for (t_pair::iterator it = this->_unsorted_list.begin(); it != this->_unsorted_list.end(); it++)
 		if ((*it).first >= 0)
 			this->_sorted_list.push_back((*it).first);
-	}
-	// printList(this->_sorted_list);
-	printList(lst);
+	this->insertList();
+}
 
+void	PmergeMe::insertList(void)
+{
+	size_t						group_size = 2;
+	size_t						size_tmp = 2;
+	std::list<int>::iterator	curr = ++this->_sorted_list.begin();
+	t_pair::iterator 			it = this->_unsorted_list.begin();
 
-
-	curr = this->_sorted_list.begin();
-	curr++;
-	// this->_sorted_list.push_back(lst.front().first);
-	for (t_pair::iterator it = lst.begin(); it != lst.end(); it++)
+	while (it != this->_unsorted_list.end())
 	{
-		if (it != lst.begin())
-			it--;
-		std::list<std::pair<std::list<int>::iterator, t_pair::iterator> >	ptrs;
-		while (size_tmp-- && curr != this->_sorted_list.end() && it != lst.end())
+		std::list<t_insert_list>	ptrs;
+		while (size_tmp-- && curr != this->_sorted_list.end() && it != this->_unsorted_list.end())
 		{
-			std::pair<std::list<int>::iterator, t_pair::iterator> bla;
-			bla.first = ++curr;
-			bla.second = ++it;
-			ptrs.push_back(bla);
-			std::cout << "\nptrs ==> tosort == " << (*bla.second).second << " end ptr == " << *bla.first << std::endl;
+			t_insert_list	tmp;
+			tmp.first = ++curr;
+			tmp.second = ++it;
+			ptrs.push_back(tmp);
 		}
-		std::list<std::pair<std::list<int>::iterator, t_pair::iterator> >::reverse_iterator	end = ptrs.rbegin();
-		for (std::list<std::pair<std::list<int>::iterator, t_pair::iterator> >::reverse_iterator	ptr = end; ptr != ptrs.rend(); ptr++)
+		for (std::list<t_insert_list>::reverse_iterator	ptr = ptrs.rbegin(); ptr != ptrs.rend(); ptr++)
 		{
-			std::cout << "\nbefore insert " << (*(*ptr).second).second << " to put before == " << *this->binarySearch((*(*ptr).second).second, this->_sorted_list.begin(), (*ptr).first) << std::endl;
-			printList(this->_sorted_list);
-			this->_sorted_list.insert(this->binarySearch((*(*ptr).second).second, this->_sorted_list.begin(), (*ptr).first), (*(*ptr).second).second);
-			std::cout << "after insert " << std::endl;
-			printList(this->_sorted_list);
-			end++;
+			size_t	nb = (*(*ptr).second).second;
+			this->_sorted_list.insert(this->binarySearch(nb, this->_sorted_list.begin(), (*ptr).first), nb);
 		}
 		size_tmp = group_size;
 		group_size = this->getGroupSize(size_tmp);
-		ptrs.clear();
-		if (it == lst.end())
-			break;
 		if (curr == this->_sorted_list.end())
 			curr--;
-			// this->_sorted_list.insert(this->binarySearch((*it).second, this->_sorted_list.begin(), curr), (*it).second);
-
-
-		// std::cout << *this->binarySearch((*it).second, this->_sorted_list.begin(), this->_sorted_list.end()) << std::endl;
-		// test = this->binarySearch((*it).second, this->_sorted_list.begin(), curr++);
 	}
-	// for (size_t i = 0; i < size; i++)
-	// {
-	// 	std::list<int>::iterator	beg = this->_sorted_list.begin();
-	// }
-	// for (size_t i = 0; i < 173; i++)
-	// {
-
-	// 	std::cout << "i => " << i << " result => " << this->getGroupSize(i) << std::endl;
-	// }
-
 }
 
 size_t	PmergeMe::getGroupSize(size_t nb)
@@ -185,8 +168,7 @@ size_t	PmergeMe::getGroupSize(size_t nb)
 		n2 = n3;
 	} while (n3 <= nb);
 
-	return nb == n1 ? n3 : 0;
-	// return n3;
+	return n3;
 }
 
 template <typename T>
@@ -201,100 +183,16 @@ T	PmergeMe::binarySearch(int nb, T ita, T itb)
 		return ita;
 	start = ita;
 	end = itb;
-	mid = ita;
-	step = std::distance(start, end) / 2;
-	std::advance(mid, step);
-	while (step > 1)
+	step = std::distance(start, end);
+	while (step > 2)
 	{
-		// step /= 2;
 		step = std::distance(start, end);
-		// std::advance(mid, step);
+		mid = start;
+		std::advance(mid, step / 2);
 		if (nb < *mid)
-		{
 			end = mid;
-			std::advance(mid, -(step / 2));
-		}
 		else
-		{
 			start = mid;
-			std::advance(mid, step / 2);
-		}
 	}
-
-	std::cout << "\ntest binary " << " ita " << *ita << " itb " << *itb << std::endl;
-	std::cout << "nb => " << nb << " == start == " << *start << " == mid == " << *mid << " == end == " << *end << std::endl;
 	return nb > *mid ? ++mid : mid;
 }
-
-
-// static std::vector<int>	&splitVector(std::vector<int> &vec_a)
-// {
-// 	size_t						size = vec_a.size() / 2;
-// 	std::vector<int>			vec_b;
-// 	std::vector<int>::iterator	it = vec_a.begin();
-
-// 	for (size_t i = 0; i < size; i++)
-// 		it++;
-
-// 	vec_b.insert(vec_b.begin(), it, vec_a.end());
-// 	vec_a.erase(it, vec_a.end());
-
-// 	return vec_b;
-// }
-
-// static std::vector<int>	&mergeVector(std::vector<int> &vec_a, std::vector<int> &vec_b)
-// {
-// 	if (vec_a.empty())
-// 		return vec_b;
-// 	if (vec_b.empty())
-// 		return vec_a;
-// 	if (vec_a)
-
-// }
-
-// template <typename T>
-// void	PmergeMe::sortList(std::vector<T> unsorted)
-// {
-// 	std::vector<T>	sorted;
-// 	size_t			size = unsorted.size();
-
-// 	size -= size % 2;
-// 	for (size_t i = 0; i < size; i++)
-// 	{
-// 		std::pair<T, T>	pair;
-// 		if (unsorted[i] < unsorted[i + 1])
-// 		{
-// 			pair.first = unsorted[i];
-// 			pair.second = unsorted[i + 1];
-// 		}
-// 		else
-// 		{
-// 			pair.first = unsorted[i + 1];
-// 			pair.first = unsorted[1];
-// 		}
-// 	}
-
-// }
-
-
-/***
- *	criar pares
- *
- *	merge maiores
- *
- * insert menores
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
-*/
