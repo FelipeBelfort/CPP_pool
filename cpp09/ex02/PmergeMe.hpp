@@ -7,18 +7,12 @@
 # include <iostream>
 # include <sys/time.h>
 
-# define DEBUG std::cout << "pas moi" << std::endl;
-# define INDEX 1
-# define SIZE 2
-// # define INI 2
 
 class PmergeMe
 {
 	typedef std::list<std::pair<int, int> >	t_pair_lst;
 	typedef std::vector<std::pair<int, int> >	t_pair_vec;
-	// typedef std::pair<std::list<int>::iterator, t_pair_lst::iterator>	t_insert_list;
 	typedef std::pair<std::list<int>::iterator, int>	t_insert_list;
-	typedef std::pair<std::vector<int>::iterator, int>	t_insert_vec;
 private:
 	std::vector<int>	_original;
 	std::vector<int>	_sorted_vector;
@@ -52,16 +46,12 @@ public:
 	void	mergeVector(t_pair_vec &vec);
 	void	sortVector(void);
 	void	insertVector(void);
-	template <typename T>
-	void	pushPair(T it, int i);
 
 	//			Outils		//
 
 	template <typename T>
 	T		binarySearch(int nb, T ita, T itb);
-	template <typename T>
-	T		binarySearchVec(int nb, T ita, T itb);
-	size_t	getGroupSize(size_t nb, size_t type);
+	size_t	getGroupSize(size_t nb);
 	template <typename T>
 	void	printList(const T &lst);
 	void	printResult(void);
@@ -74,11 +64,6 @@ public:
 		const char	*what() const throw();
 	};
 
-	// template <typename T>
-	// void	sortList(std::vector<T> unsorted);
-	// void	printList(const std::vector<int> &vec);
-	template <typename T>
-	void	printPair(const T &lst);
 };
 
 #endif
