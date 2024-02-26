@@ -4,6 +4,7 @@
 # include <iostream>
 # include <algorithm>
 # include <list>
+# include <vector>
 
 class Span
 {
@@ -17,10 +18,11 @@ public:
 	Span(const Span &copy);
 	Span &operator=(const Span &copy);
 
+	void	addRangeOfNumbers(const std::vector<int>::iterator begin, const std::vector<int>::iterator end);
+
 	void	addNumber(int nb);
 	int		shortestSpan(void);
 	int		longestSpan(void);
-	void	addRangeOfNumbers(size_t amount);
 
 	class ExceedSizeOfListException : public std::exception
 	{
