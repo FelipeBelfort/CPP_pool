@@ -75,7 +75,7 @@ void	Span::addNumber(int nb)
 void	Span::addRangeOfNumbers(const std::vector<int>::iterator begin, const std::vector<int>::iterator end)
 {
 	for (std::vector<int>::const_iterator i = begin; i != end; i++)
-		addNumber(*begin);
+		addNumber(*i);
 	
 }
 
