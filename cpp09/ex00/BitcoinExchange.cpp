@@ -130,7 +130,8 @@ void	BitcoinExchange::parseInputLine(std::string &str)
 
 	if (str == "date | value")
 		return ;
-	if (str.size() < 14 || str.find(" | ") != 10 || str.find_first_not_of("-0123456789| .") != std::string::npos || str.find_first_of("0123456789", 13) > 14)
+	if (str.size() < 14 || str.find(" | ") != 10 || str.find_first_not_of("-+0123456789| .") != std::string::npos 
+		|| str.find_first_of("0123456789", 13) > 14 || str.find_first_of(".", 13) != str.find_last_of("."))
 		throw InputErrorException();
 	key = str.substr(0, 10);
 	this->parseDate(key);

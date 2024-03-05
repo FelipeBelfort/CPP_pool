@@ -50,7 +50,7 @@ public:
 	//			Outils		//
 
 	template <typename T>
-	T		binarySearch(int nb, T ita, T itb);
+	T		binarySearch(int nb, const T &ita, const T &itb);
 	size_t	getGroupSize(size_t nb);
 	template <typename T>
 	void	printList(const T &lst);

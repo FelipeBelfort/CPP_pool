@@ -225,7 +225,7 @@ size_t	PmergeMe::getGroupSize(size_t nb)
 }
 
 template <typename T>
-T	PmergeMe::binarySearch(int nb, T ita, T itb)
+T	PmergeMe::binarySearch(int nb, const T &ita, const T &itb)
 {
 	size_t	step;
 	T		start;
